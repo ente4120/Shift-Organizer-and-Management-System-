@@ -1,0 +1,17 @@
+﻿.container {
+    padding-top:10px;
+    text-align:right;
+}
+
+.col-lg-12{
+    padding-bottom:15px;
+}
+
+.btn{
+    height:70px;
+    width:150px;
+}
+
+i{
+    vertical-align:middle;
+}

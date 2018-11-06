@@ -1,0 +1,137 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MayaManagerMasterPage.master.cs" Inherits="MayaMasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+     <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
+
+    <%-- Jquery js --%>
+    <script src="js/jquery-3.3.1.min.js"></script>
+
+    <%-- Bootstrap Css and js --%>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <script src="js/bootstrap.min.js"></script> 
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <%-- Full Calender --%>
+    <link href="fullcalender/fullcalendar.min.css" rel="stylesheet"/>
+    <%--<script src="fullcalender/lib/jquery.min.js"></script>--%>
+    <script src="fullcalender/lib/jquery-ui.min.js"></script>
+    <script src="fullcalender/lib/moment.min.js"></script>
+    <script src="fullcalender/fullcalendar.min.js"></script>
+    <script src="fullcalender/locale-all.js"></script>
+    <script src="fullcalender/demos/js/theme-chooser.js"></script>
+    <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+
+    <%-- Our style --%>
+    <link href="css/StyleSheet.css" rel="stylesheet" />
+
+    <%-- Our JS --%>
+    <script src="js/CustomJS.js"></script>
+
+<script>
+ 
+$(function() {
+    var initialLocaleCode = 'he';
+
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'listWeek,month,agendaWeek,agendaDay'
+      },
+      locale: initialLocaleCode,
+      themeSystem: 'bootstrap4', //theme of the calender
+      defaultView: 'listDay', //the default view of the calender, we choose week
+      height:550, //the height of the calender in the screen (650px)
+      buttonIcons: true, // show the prev/next text
+      navLinks: true, // can click day/week names to navigate views
+      eventLimit: true, // allow "more" link when too many events
+        events: function (start, end, timezone, callback) {  //start the ajax call to retrive all the data shifts from DB
+            $.ajax({
+                url: 'WebService.asmx/getShiftCal',
+                type: 'POST',
+                contentType: 'application/json; charset = utf-8',
+                dataType: 'json',
+                success: function successCBgetEventsFromDB(doc) {
+                    doc = $.parseJSON(doc.d);
+                    var event = [];
+                    $(doc).each(function () {
+                            //push the events json's to the calendar  
+                        var tempDate = $(this).attr('Day'); // we need to retrieve the date as a string like: 2016-04-16
+                        var tempTitle = $(this).attr('Title');
+                        var tempStart = $(this).attr('Start');
+                        var tempEnd = $(this).attr('End');
+                        var tempType = $(this).attr('Type');
+                        var temp = tempDate.substring(0,9);
+                        tempDate = temp;
+                        tempDate = tempDate.substring(2, 4) + '-0' + tempDate.substring(0, 1) + '-' + tempDate.substring(5, 10);
+                        var reverseDate = tempDate.split("-").reverse().join("-");
+                        event.push({
+                            title: tempTitle,
+                            type: tempType,
+                            start: reverseDate + "T" + tempStart,
+                            end: reverseDate + "T" + tempEnd
+                        });
+                    });
+                    callback(event);
+                },
+                error:
+                function error() { alert("Error"); }
+            });
+        },
+    });
+
+    // build the locale selector's options
+    $.each($.fullCalendar.locales, function(localeCode) {
+      $('#locale-selector').append(
+        $('<option/>')
+          .attr('value', localeCode)
+          .prop('selected', localeCode == initialLocaleCode)
+          .text(localeCode)
+      );
+    });
+
+    // when the selected option changes, dynamically change the calendar option
+    $('#locale-selector').on('change', function() {
+      if (this.value) {
+        $('#calendar').fullCalendar('option', 'locale', this.value);
+      }
+    });
+  });
+        
+  
+
+</script>
+</head>
+<body dir="rtl">
+    <form id="form1" runat="server">
+    <div class="navbar navbar-dark  fix-top">
+        <div class="col-lg-5">
+
+        </div>
+        <div class="col-lg-7">
+            <a href="mainManager.aspx"><img class="img-fluid float-right"  src="img/MAYA.png" style="height:120px"/></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-lg-12 text-center">
+            <a href="Shifts.aspx" class="btn btn-success" role="button">משמרות <img src="img/shift_logo.png" style="height:25px;"/></a>
+            <a href="KnowledgeM.aspx" class="btn btn-warning">הון ידע <img src="img/info_logo1.png" style="height:25px;"/></a>
+            <a href="MessegM.aspx" class="btn btn-danger">הודעות <img src="img/message_logo.png" style="height:25px;"/></a>
+            <a href="TransferM.aspx" class="btn btn-primary">העברות <img src="img/trans_logo.png" style="height:25px;"/></a>
+            <a href="AddEmp.aspx" class="btn btn-dark">ניהול עובדים <img src="img/managEmp.png" style="height:35px; color:white;"/></a>
+        </div>
+        <div class="col-lg-12">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+   </div>
+   </div>
+    </form>
+</body>
+</html>

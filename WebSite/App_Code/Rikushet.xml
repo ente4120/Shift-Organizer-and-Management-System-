@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Employees>
+  <employee>
+    <first_name>בר</first_name>
+    <last_name>עובד</last_name>
+    <user_name>1401</user_name>
+    <password>1401</password>
+    <type>מנהל</type>
+    <branch>עיר ימים</branch>
+    <minimum>5</minimum>
+    <have>0</have>
+    <shiftsEmployees>11,21,31,41,51</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>ורה</first_name>
+    <last_name>מרטינס</last_name>
+    <user_name>1402</user_name>
+    <password>1402</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>5</minimum>
+    <have>0</have>
+    <shiftsEmployees>11,13,21,23,41,53,73</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>ניק</first_name>
+    <last_name>דיויס</last_name>
+    <user_name>1403</user_name>
+    <password>1403</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>5</minimum>
+    <have>0</have>
+    <shiftsEmployees>13,23,31,33,43,51,53</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>גלוריה</first_name>
+    <last_name>אברמוב</last_name>
+    <user_name>1404</user_name>
+    <password>1404</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>3</minimum>
+    <have>0</have>
+    <shiftsEmployees>13,21,33,43,61</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>יוני</first_name>
+    <last_name>בורשטיין</last_name>
+    <user_name>1405</user_name>
+    <password>1405</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>1</minimum>
+    <have>0</have>
+    <shiftsEmployees>12,23,41,51,61,73</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>נועה</first_name>
+    <last_name>רייס</last_name>
+    <user_name>1406</user_name>
+    <password>1406</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>1</minimum>
+    <have>0</have>
+    <shiftsEmployees>31,53</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>עידן</first_name>
+    <last_name>אנטה</last_name>
+    <user_name>1407</user_name>
+    <password>1407</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>1</minimum>
+    <have>0</have>
+    <shiftsEmployees>33,43,61</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>שני</first_name>
+    <last_name>כהן</last_name>
+    <user_name>1408</user_name>
+    <password>1408</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>1</minimum>
+    <have>0</have>
+    <shiftsEmployees>61,73</shiftsEmployees>
+  </employee>
+  <employee>
+    <first_name>עמית</first_name>
+    <last_name>שאולי</last_name>
+    <user_name>1409</user_name>
+    <password>1409</password>
+    <type>עובד</type>
+    <branch>עיר ימים</branch>
+    <minimum>1</minimum>
+    <have>0</have>
+    <shiftsEmployees>73</shiftsEmployees>
+  </employee>
+</Employees>

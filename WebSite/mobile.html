@@ -1,0 +1,1043 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="appStyleSheet.css" rel="stylesheet" />
+
+    <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+
+    <!-- Jquery-UI -->
+    <!--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
+
+    <link href="js/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" />
+    <script src="js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <script src="js/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <!-- Jquery-MOBILE -->
+    <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+
+    <link href="js/jquery-mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet" />
+    <script src="js/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+
+
+
+
+    <!--<%-- Full Calender --%>-->
+    <link href="fullcalender/fullcalendar.min.css" rel="stylesheet" />
+    <!--<script src="fullcalender/lib/jquery-ui.min.js"></script>-->
+    <script src="fullcalender/lib/moment.min.js"></script>
+    <script src="fullcalender/fullcalendar.min.js"></script>
+    <script src="fullcalender/locale-all.js"></script>
+    <script src="fullcalender/demos/js/theme-chooser.js"></script>
+    <!--<link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>-->
+
+    <script src="jqueryCalls.js"></script>
+    <script src="AjaxCalls.js"></script>
+
+
+
+    <script>
+
+
+
+
+        $(document).one("pagecreate", function () {
+
+
+
+
+            /* create reside-menu */
+            $("#content").enhanceWithin().hide();
+
+            /* open function */
+            function openMenu() {
+                var activePage = $("body").pagecontainer("getActivePage");
+                $("body").css({
+                    "overflow-y": "hidden"
+                });
+                activePage.height($(window).height() - 88);
+                activePage.addClass("panel-animate panel-open");
+                $("#content").show();
+            }
+
+            /* close function */
+            function closeMenu() {
+                var activePage = $("body").pagecontainer("getActivePage");
+                $(".ui-page-active").addClass("panel-close").removeClass("panel-open");
+                $("#content").css("z-index", "-9999");
+            }
+
+            /* change page */
+            $("#content").on("click", "a:not(.panel-close-btn)", function (e) {
+                e.preventDefault();
+                var page = $(this).attr("href");
+                closeMenu();
+                $(document).one("webkitTransitionEnd oTransitionEnd otransitionend transitionend msTransitionEnd", ".panel-close", function (e) {
+                    $("body").pagecontainer("change", page, {
+                        transition: "flip"
+                    });
+                });
+            });
+
+            /* open */
+            $(".panel").on("click", openMenu);
+
+            /* close */
+            $(".panel-close-btn").on("click", closeMenu);
+
+            /* remove animation and extra styles */
+            $(document).on("webkitTransitionEnd oTransitionEnd otransitionend transitionend msTransitionEnd", ".panel-open, .panel-close", function (e) {
+                var activePage = $("body").pagecontainer("getActivePage");
+                if ($(this).hasClass("panel-open")) {
+                    $("#content").css("z-index", "9999");
+                }
+                if ($(this).hasClass("panel-close")) {
+                    $("#content").hide();
+                    $("body").removeAttr("style");
+                    activePage.removeAttr("style");
+                    $(this).removeClass("panel-animate panel-close").css({
+                        padding: "44px 0"
+                    });
+                    $.mobile.resetActivePageHeight();
+                }
+            });
+        });
+
+        function resetCB() {
+
+            $("input[type='checkbox']").attr("checked", false).checkboxradio("refresh");
+            $("input[type='checkbox']").parent().removeClass("btn success");
+            $("input[type='checkbox']").parent().removeClass("btn danger");
+        }
+
+        //$(document).ready(function () {
+
+        $(function () {
+            var initialLocaleCode = 'he';
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next',
+                    right: 'listWeek'
+                },
+                locale: initialLocaleCode,
+                themeSystem: 'bootstrap4', //theme of the calender
+                defaultView: 'listWeek', //the default view of the calender, we choose week
+                height: 550, //the height of the calender in the screen (650px)
+                buttonIcons: true, // show the prev/next text
+                navLinks: true, // can click day/week names to navigate views
+                eventLimit: true, // allow "more" link when too many events
+                events: function (start, end, timezone, callback) {  //start the ajax call to retrive all the data shifts from DB
+                    $.ajax({
+                        url: 'WebService.asmx/getShiftCal',
+                        type: 'POST',
+                        contentType: 'application/json; charset = utf-8',
+                        dataType: 'json',
+                        success: function successCBgetEventsFromDB(doc) {
+                            doc = $.parseJSON(doc.d);
+                            var event = [];
+                            $(doc).each(function () {
+                                //push the events json's to the calendar
+                                var tempDate = $(this).attr('Day'); // we need to retrieve the date as a string like: 2016-04-16
+                                var tempTitle = $(this).attr('Title');
+                                var tempStart = $(this).attr('Start');
+                                var tempEnd = $(this).attr('End');
+                                var tempType = $(this).attr('Type');
+                                var temp = tempDate.substring(0, 9);
+                                tempDate = temp;
+                                tempDate = tempDate.substring(2, 4) + '-0' + tempDate.substring(0, 1) + '-' + tempDate.substring(5, 10);
+                                var reverseDate = tempDate.split("-").reverse().join("-");
+                                event.push({
+                                    title: tempTitle,
+                                    type: tempType,
+                                    start: reverseDate + "T" + tempStart,
+                                    end: reverseDate + "T" + tempEnd
+                                });
+                            });
+                            callback(event);
+                        },
+                        error: function error() { alert("Error!"); }
+                    });
+                },
+            });
+
+            // build the locale selector's options
+            $.each($.fullCalendar.locales, function (localeCode) {
+                $('#locale-selector').append(
+                    $('<option/>')
+                        .attr('value', localeCode)
+                        .prop('selected', localeCode == initialLocaleCode)
+                        .text(localeCode)
+                );
+            });
+
+            // when the selected option changes, dynamically change the calendar option
+            $('#locale-selector').on('change', function () {
+                if (this.value) {
+                    $('#calendar').fullCalendar('option', 'locale', this.value);
+                }
+            });
+        });
+
+        //Script for loading the shift setting
+
+        function getSelectedCheckBoxes() {
+            var resultString = "";
+            var result = $('input[type="checkbox"]:checked');
+
+            for (var i = 0; i < result.length; i++) {
+                if (resultString == "") {
+                    resultString = result[i].value;
+                    //$('#divResult').html(resultString);
+                }
+                else {
+                    resultString = resultString + "," + result[i].value;
+                    //$('#divResult').html(resultString);
+                }
+            }
+
+            return resultString;
+        };
+
+
+
+        function saveShifts() {
+            var empNum = userID;
+            var chosenShifts = getSelectedCheckBoxes();
+
+            if (empNum == "") {
+                alert("empNum empty")
+                return;
+            }
+
+            if (chosenShifts == "") {
+                alert("chosenShifts empty")
+                return;
+            }
+
+            var request = {
+                id: empNum,
+                shift: chosenShifts
+            }
+
+            myAjaxFunc(request, successCB, errorCB);
+        };
+
+        function loginUser() {
+            var dataStringUser = document.getElementById("loginusername").value;
+            var dataStringPassword = document.getElementById("loginuserpass").value;
+
+            var request = {
+                userNAME: dataStringUser,
+                userPASS: dataStringPassword
+            }
+            loginUserAJAX(request, renderLoginUser, errorLogin);
+            getShiftSettinghAJAX(request, renderSetting, errorSetting);
+        };
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function insertSwitch() {
+            var emp = userID;
+            var tempINFO = document.getElementById("myShiftsDDL").value;
+            var shift = tempINFO.substring(0, 2);
+            var type = tempINFO.substring(2);
+            var request = { emp: emp, shift: shift, type: type };
+            insertSwitchAJAX(request, renderSwitch, errorInsert)
+        }
+
+        function UpdateSwitch() {
+            var empTake = userID;
+            var tempINFO = document.getElementById("otherShiftsDDL");
+            var shiftINFO = document.getElementById("otherShiftsDDL").value;
+            var i = tempINFO.selectedIndex;
+            var textInfo = tempINFO.options[i].text;
+            var shift = shiftINFO.substring(0, 2);
+            var type = shiftINFO.substring(2);
+            var textValue = textInfo.split(' ');
+            var tempAsk = textValue[2];
+            var request = { empTake: empTake, empAsk: tempAsk, shift: shift, type: type };
+            UpdateSwitchAJAX(request, renderSwitch, errorInsert)
+        }
+
+        function ApproveSwitch() {
+            var empTake = userID;
+            var tempINFO = document.getElementById("shiftToConfig");
+            var shiftINFO = document.getElementById("shiftToConfig").value;
+            var i = tempINFO.selectedIndex;
+            var textInfo = tempINFO.options[i].text;
+            var shift = shiftINFO.substring(0, 2);
+            var type = shiftINFO.substring(2);
+            var textValue = textInfo.split(' ');
+            var tempAsk = textValue[2];
+            var request = { empTake: empTake, empAsk: tempAsk, shift: shift, type: type };
+            ApproveSwitchAJAX(request, renderSwitch, errorInsert)
+        }
+    </script>
+</head>
+
+
+<body dir="rtl">
+
+    <!--------------login - page 0------------------------>
+    <div data-role="page" id="login">
+        <div data-role="header" data-theme="c">
+        </div>
+        <div role="main" class="ui-content">
+            <table>
+                <tr><td><img src="img/MAYA.png" class="logo" style="height:130px" /></td></tr>
+            </table>
+
+
+            <div class="login-box">
+                <img src="img/Login.png" class="avatar" />
+                <h1>התחברות</h1>
+                <form>
+                    <p>שם משתמש</p>
+                    <input type="text" id="loginusername" name="username" />
+                    <p>סיסמא</p>
+                    <input type="text" id="loginuserpass" name="password" />
+                    <input type="submit" name="submit" value="כניסה" onclick="loginUser()" />
+                </form>
+
+
+            </div>
+
+            <!--<div class="box">
+                <h1>התחברות</h1>
+                <form>
+                    <div class="input-group">
+                        <input type="text" id="username" autocomplete="off" onblur="checkInput(this)" style="text-shadow:6px 6px 0px rgba(0,0,0,0.2);" placeholder="שם משתמש" dir="rtl"/>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="password" onblur="checkInput(this)" placeholder="סיסמא"/>
+                    </div>
+                    <input type="submit" value="כניסה" />
+                </form>
+            </div>-->
+
+        </div>
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!--------------index - page 1------------------------>
+    <div data-role="page" id="index">
+        <div data-theme="b" data-role="header">
+            <h3>ריקושט</h3>
+        </div>
+        <div data-role="content" class="page">
+            <table>
+                <tr><td><img src="img/MAYA.png" class="logo" /></td></tr>
+                <tr><td><img src="img/man.png" class="iconPic" /></td></tr>
+                <tr><td>ברוך הבא </td></tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td><a href="#shiftShow"><img src="img/calendar1.png" class="iconPic" /></a></td>
+                    <td> <a href="#knowledge"> <img src="img/knowledge2.png" class="iconPic" /></a></td>
+                </tr>
+                <tr>
+                    <td>משמרות</td>
+                    <td>הון ידע</td>
+                </tr>
+                <tr>
+                    <td><a href="#message"><img src="img/message.png" class="iconPic" /></a></td>
+                    <td><a href="#transfer"> <img src="img/transport.png" class="iconPic" /></a></td>
+                </tr>
+                <tr>
+                    <td>הודעות</td>
+                    <td>העברות</td>
+                </tr>
+            </table>
+        </div>
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <!--<div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a href="#knowledge"><i class="fa fa-book"></i></a>
+                <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div>--> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!--------דף הון ידע - Page 2-------->
+    <div data-role="page" id="knowledge">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+            <!--<a href="#index" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>הון ידע</h3>
+        </div>
+
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+            <div id="know">
+                <ul data-role="listview">
+                    <li ><a href="#product">מוצרים<i class="fa fa-shopping-bag" aria-hidden="true"></i></a></li>
+                    <li ><a href="#catalog">קטלוגים<i class="glyphicon glyphicon-book" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a class="active" href="#knowledge"><i class="fa fa-book"></i></a>
+                <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!------דף מוצרים - 2.1------>
+    <div data-role="page" id="product">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->\
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>הון ידע - מוצרים</h3>
+        </div>
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+            <div class="example-wrapper" data-iscroll>
+                <ul data-role="listview" id="product-list" data-theme="a" data-filter="true" data-filter-placeholder="חפש מוצר...">
+                    <!--product will dinamcly build here-->
+                </ul>
+            </div>
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a class="active" href="#knowledge"><i class="fa fa-book"></i></a>
+                <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!------דף מידע מוצר - 2.1.2------>
+    <div data-role="page" id="productDetails">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>דף מידע מוצר</h3>
+        </div>
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+
+            <table>
+                <tr><td><h3 id="prodName"></h3></td></tr>
+                <tr><td><img id="prodImgUrl" style="max-height:200px" /></td></tr>
+                <tr><td><p id="prodBrand"></p></td></tr>
+                <tr><td><p id="prodPrice"></p></td></tr>
+                <tr><td><p id="prodDiscription"></p></td></tr>
+            </table>
+
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a class="active" href="#knowledge"><i class="fa fa-book"></i></a>
+                <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!------דף קטלוגים - 2.2------>
+    <div data-role="page" id="catalog">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>הון ידע - קטלוגים</h3>
+        </div>
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+            <div class="example-wrapper" data-iscroll>
+                <ul data-role="listview" id="catalog-list" data-theme="a" data-filter="true" data-filter-placeholder="חפש קטלוג"></ul>
+            </div>
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a class="active" href="#knowledge"><i class="fa fa-book"></i></a>
+                <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!------דף מידע קטלוג - 2.2.2------>
+    <div data-role="page" id="catalogDetails">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>דף מידע קטלוג</h3>
+        </div>
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+
+            <table id="catTb">
+                <tr><td id="catName"></td></tr>
+                <tr><td></td></tr>
+                <tr><td id="catPdf"></td></tr>
+            </table>
+
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a  class="active" href="#knowledge"><i class="fa fa-book"></i></a>
+                <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!------דף הודעות - 3------>
+    <div data-role="page" id="message">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>הודעות</h3>
+        </div>
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+
+            <!--<div><a href="#insertMsg">יצירת הודעה חדשה</a></div>-->
+            
+
+            <div data-role="collapsible-set" id="Message-list" data-iconpos="right" dir="rtl">
+                <!-- message will be dynamically added here -->
+                <!--אקורדיון-->
+            </div>
+
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a class="active" href="#message"><i class="fa fa-envelope"></i></a>
+                <a href="#knowledge"><i class="fa fa-book"></i></a>
+                <a  href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div> 
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+
+
+    <!------דף משמרות - 4------>
+    <div data-role="page" id="shiftShow">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>משמרות</h3>
+        </div>
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#shiftSwitch">החלפה</a></li>
+                <li><a href="#shiftShow" class="ui-btn-active ui-state-persist">שיבוץ שבועי</a></li>
+                <li><a href="#shiftControl">הגשת שיבוץ</a></li>
+            </ul>
+        </div>
+
+        <div data-role="content">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+            <div id='calendar' class="fc fc-ltr ui-widget"></div>
+
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+
+            <div class="icon-bar">
+                <a href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a href="#knowledge"><i class="fa fa-book"></i></a>
+                <a class="active" href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div>
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!------דף  הגשת משמרות - 4.1------>
+    <div data-role="page" id="shiftControl">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>משמרות</h3>
+        </div>
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#shiftSwitch">החלפה</a></li>
+                <li><a href="#shiftShow">שיבוץ שבועי</a></li>
+                <li><a href="#shiftControl" class="ui-btn-active ui-state-persist">הגשת שיבוץ</a></li>
+
+            </ul>
+        </div>
+
+        <div data-role="content">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+
+            <div role="main" class="ui-content">
+                <!--<input type="text" id="empId">-->
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">בוקר</th>
+                            <th scope="col">אמצע</th>
+                            <th scope="col">ערב</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">ראשון</th>
+                            <td>
+                                <!--<input type="checkbox" name="checkbox-h-2a" value="11" class="danger">-->
+                                <!--<label class="btn btn-danger">-->
+                                <label id="11">
+
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="11">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>
+                            </td>
+                            <td>
+                                <!--<input type="checkbox" name="checkbox-h-2a" value="12" class="btn danger">-->
+                                <!--<label class="btn btn-success active">-->
+                                <label  id="12">
+
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="12">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>
+                            </td>
+                            <td>
+                                <label id="13">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="12">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">שני</th>
+                            <td>
+                                <label id="21">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="21">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="21" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="22">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="22">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="22" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="23">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="23">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="23" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">שלישי</th>
+                            <td>
+                                <label id="31">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="31">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="31" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="32">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="32">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="32" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="33">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="33">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="33" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">רביעי</th>
+                            <td>
+                                <label id="41">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="41">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="41" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="42">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="42">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="42" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="43">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="43">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="43" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">חמישי</th>
+                            <td>
+                                <label id="51">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="51">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="51" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="52">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="52">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="52" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="53">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="53">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="53" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">שישי</th>
+                            <td>
+                                <label id="61">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="61">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="61" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="62">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="62">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="62" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="63">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="63">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="63" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">שבת</th>
+                            <td>
+                                <label id="71">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="71">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="71" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="72">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="72">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="72" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                            <td>
+                                <label id="73">
+                                    <input type="checkbox" autocomplete="off" style="display:none;" value="73">
+                                    <!--<span class="glyphicon glyphicon-ok"></span>-->
+                                </label>                                <!--<label for="73" class="btn button-outline-danger">בחר</label>-->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+        <div>
+
+            <!--<a href="#popupBasic" id="btnSubmit" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" style="width:340px" onclick="saveShifts()">שמור</a>
+            <div data-role="popup" id="popupBasic">
+                <img src="img/checkmark.png" />
+                <p>המשמרות נשמרו</p>
+            </div>-->
+
+            <button id="btnSubmit" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" style="width:100%" onclick="saveShifts()">שמור</button>
+            <div id="snackbar">
+                <img src="img/checkmark.png" />
+                <p>המשמרות נשמרו</p>
+            </div>
+
+
+            <button onclick="resetCB()">אפס</button>
+
+            <div id="divResult"></div>
+
+
+            <div data-theme="a" data-role="footer" data-position="fixed">
+
+                <div class="icon-bar">
+                    <a href="#transfer"><i class="fa fa-truck"></i></a>
+                    <a href="#message"><i class="fa fa-envelope"></i></a>
+                    <a href="#knowledge"><i class="fa fa-book"></i></a>
+                    <a class="active" href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                    <a href="#index"><i class="fa fa-home"></i></a>
+                </div>
+
+
+
+                <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+            </div>
+        </div>
+
+    </div>
+
+    <!------דף החלפת משמרות - 4.2------>
+    <div data-role="page" id="shiftSwitch">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>משמרות</h3>
+        </div>
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#shiftSwitch" class="ui-btn-active ui-state-persist">החלפה</a></li>
+                <li><a href="#shiftShow">שיבוץ שבועי</a></li>
+                <li><a href="#shiftControl">הגשת שיבוץ</a></li>
+
+            </ul>
+        </div>
+
+        <div data-role="content">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+
+            <table class="shiftSwitchTbl">
+                <tr>
+                    <th colspan="3"><h1>החלפת משמרות</h1></th>
+                </tr>
+
+                <tr>
+                    <th colspan="3">המשמרות שלי</th>
+                </tr>
+                <tr>
+                    <th>בחר</th>
+                    <td>
+                        <form>
+                            <div class="ui-field-contain">
+                                <select name="select-native-1" id="myShiftsDDL">
+                                </select>
+                            </div>
+                        </form>
+                    </td>
+                    <td><button style="background-color:forestgreen; color:white; text-shadow:none" onclick="insertSwitch()">הגש בקשה</button></td>
+                </tr>
+
+                <tr>
+                    <th colspan="3">משמרות להחלפה</th>
+                </tr>
+                <tr>
+                    <th>בחר</th>
+                    <td>
+                        <form>
+                            <div class="ui-field-contain">
+                                <select name="select-native-1" id="otherShiftsDDL">
+                                </select>
+                            </div>
+                        </form>
+                    </td>
+                    <td><button style="background-color:orange; color:white; text-shadow:none" onclick="UpdateSwitch()">בקש משמרת</button></td>
+                </tr>
+
+                <tr>
+                    <th colspan="3">משמרות לאישור</th>
+                </tr>
+                <tr>
+                    <th>בחר</th>
+                    <td>
+                        <form>
+                            <div class="ui-field-contain">
+                                <select name="select-native-1" id="shiftToConfig">
+                                </select>
+                            </div>
+                        </form>
+                    </td>
+                    <td><button style="background-color:cadetblue; color:white; text-shadow:none" onclick="ApproveSwitch()">אשר משמרת</button></td>
+                </tr>
+            </table>
+
+
+
+
+
+
+
+
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+
+            <div class="icon-bar">
+                <a  href="#transfer"><i class="fa fa-truck"></i></a>
+                <a href="#message"><i class="fa fa-envelope"></i></a>
+                <a href="#knowledge"><i class="fa fa-book"></i></a>
+                <a class="active" href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                <a href="#index"><i class="fa fa-home"></i></a>
+            </div>
+
+
+            <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+        </div>
+    </div>
+
+    <!--------דף העברות - 5------>
+    <div data-role="page" id="transfer">
+        <div data-theme="b" data-role="header" data-add-back-btn="true">
+            <!--<a href="#" data-rel="back" data-icon="arrow-l" data-iconpos="left">חזרה</a>-->
+            <!--<a href="#" class="ui-btn panel">MENU</a>-->
+
+            <!--<a href="index.html" data-icon="home" class="ui-btn-right"></a>-->
+            <h3>העברות</h3>
+        </div>
+        <div data-role="content" class="page">
+            <div class="logodiv">
+                <img src="img/MAYA.png" class="logo" />
+            </div>
+
+            <table  id="transTbl" data-role="table" data-mode="columntoggle" class="ui-responsive table-stripe ui-shadow">
+
+               
+                <thead>
+                    <tr class="ui-bar-d">
+                        <th data-priority='persist'>מזהה</th>
+                        <th data-priority='persist'>תאריך</th>
+                        <th >מוצר</th>
+                        <th>מסניף</th>
+                        <th>אל סניף</th>
+                        <th data-priority="6">כמות</th>
+                        <th >יוצר</th>
+                    </tr>
+                </thead>
+                <tbody id="transferTable">
+                    <!-- transfer will be dynamically added here -->
+
+                </tbody>
+            </table>
+
+            <div data-theme="a" data-role="footer" data-position="fixed">
+
+                <div class="icon-bar">
+                    <a class="active" href="#transfer"><i class="fa fa-truck"></i></a>
+                    <a href="#message"><i class="fa fa-envelope"></i></a>
+                    <a href="#knowledge"><i class="fa fa-book"></i></a>
+                    <a href="#shiftShow"><i class="fa fa-calendar"></i></a>
+                    <a href="#index"><i class="fa fa-home"></i></a>
+                </div>
+
+                <h1>פותח ע"י - עידן אנטה, ריקי נחום, ספיר חן</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Panel -->
+    <div id="bg"></div>
+    <div id="content">
+        <div data-role="controlgroup" data-mini="true">
+            <ul data-role="listview" data-theme="a" data-inset="true" id="menu">
+                <li>
+                    <a href="#shiftShow">משמרות</a>
+
+                </li>
+                <li>
+                    <a href="#knowledge">הון ידע</a>
+
+                </li>
+                <li>
+                    <a href="#message">הודעות</a>
+
+                </li>
+                <li>
+                    <a href="#transfer">העברות</a>
+                </li>
+            </ul> <a href="#" class="ui-btn ui-btn-b ui-btn-icon-right ui-icon-delete panel-close-btn">Close</a>
+
+        </div>
+    </div>
+    <!-- / -->
+
+</body>
+</html>

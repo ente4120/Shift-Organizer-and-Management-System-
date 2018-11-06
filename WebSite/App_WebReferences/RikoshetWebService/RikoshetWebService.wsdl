@@ -1,0 +1,978 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="getEmployees">
+        <s:complexType />
+      </s:element>
+      <s:element name="getEmployeesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getEmployeesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getChanges">
+        <s:complexType />
+      </s:element>
+      <s:element name="getChangesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getChangesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getShiftsettings">
+        <s:complexType />
+      </s:element>
+      <s:element name="getShiftsettingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getShiftsettingsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getGuide">
+        <s:complexType />
+      </s:element>
+      <s:element name="getGuideResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getGuideResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getTransfer">
+        <s:complexType />
+      </s:element>
+      <s:element name="getTransferResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getTransferResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getProduct">
+        <s:complexType />
+      </s:element>
+      <s:element name="getProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getProductResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCategories">
+        <s:complexType />
+      </s:element>
+      <s:element name="getCategoriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCategoriesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getMessage">
+        <s:complexType />
+      </s:element>
+      <s:element name="getMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getShifts">
+        <s:complexType />
+      </s:element>
+      <s:element name="getShiftsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getShiftsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getFullProduct">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getFullProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getFullProductResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getFullGuide">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getFullGuideResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getFullGuideResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSwitch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getSwitchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getSwitchResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertSwitch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="emp" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="shift" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertSwitchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertSwitchResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updateSwitch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="empTake" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="empAsk" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="shift" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updateSwitchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updateSwitchResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="approveSwitch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="empTake" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="empAsk" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="shift" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="approveSwitchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="approveSwitchResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertShift">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="shift" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertShiftResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertShiftResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertShiftSettings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="shift" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="possible" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertShiftSettingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertShiftSettingsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertShiftAfterEditing">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="shift" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertShiftAfterEditingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertShiftAfterEditingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="writer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="content" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="branch" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertTransfer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="writer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="from" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="to" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Prod" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertTransferResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertTransferResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertEmployee">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="UserName" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Branch" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Minimum" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertEmployeeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insertEmployeeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="loginUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userName" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="loginUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCalenderShifts">
+        <s:complexType />
+      </s:element>
+      <s:element name="getCalenderShiftsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCalenderShiftsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getEmployeesSoapIn">
+    <wsdl:part name="parameters" element="tns:getEmployees" />
+  </wsdl:message>
+  <wsdl:message name="getEmployeesSoapOut">
+    <wsdl:part name="parameters" element="tns:getEmployeesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getChangesSoapIn">
+    <wsdl:part name="parameters" element="tns:getChanges" />
+  </wsdl:message>
+  <wsdl:message name="getChangesSoapOut">
+    <wsdl:part name="parameters" element="tns:getChangesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getShiftsettingsSoapIn">
+    <wsdl:part name="parameters" element="tns:getShiftsettings" />
+  </wsdl:message>
+  <wsdl:message name="getShiftsettingsSoapOut">
+    <wsdl:part name="parameters" element="tns:getShiftsettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getGuideSoapIn">
+    <wsdl:part name="parameters" element="tns:getGuide" />
+  </wsdl:message>
+  <wsdl:message name="getGuideSoapOut">
+    <wsdl:part name="parameters" element="tns:getGuideResponse" />
+  </wsdl:message>
+  <wsdl:message name="getTransferSoapIn">
+    <wsdl:part name="parameters" element="tns:getTransfer" />
+  </wsdl:message>
+  <wsdl:message name="getTransferSoapOut">
+    <wsdl:part name="parameters" element="tns:getTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProductSoapIn">
+    <wsdl:part name="parameters" element="tns:getProduct" />
+  </wsdl:message>
+  <wsdl:message name="getProductSoapOut">
+    <wsdl:part name="parameters" element="tns:getProductResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCategoriesSoapIn">
+    <wsdl:part name="parameters" element="tns:getCategories" />
+  </wsdl:message>
+  <wsdl:message name="getCategoriesSoapOut">
+    <wsdl:part name="parameters" element="tns:getCategoriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:getMessage" />
+  </wsdl:message>
+  <wsdl:message name="getMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:getMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="getShiftsSoapIn">
+    <wsdl:part name="parameters" element="tns:getShifts" />
+  </wsdl:message>
+  <wsdl:message name="getShiftsSoapOut">
+    <wsdl:part name="parameters" element="tns:getShiftsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getFullProductSoapIn">
+    <wsdl:part name="parameters" element="tns:getFullProduct" />
+  </wsdl:message>
+  <wsdl:message name="getFullProductSoapOut">
+    <wsdl:part name="parameters" element="tns:getFullProductResponse" />
+  </wsdl:message>
+  <wsdl:message name="getFullGuideSoapIn">
+    <wsdl:part name="parameters" element="tns:getFullGuide" />
+  </wsdl:message>
+  <wsdl:message name="getFullGuideSoapOut">
+    <wsdl:part name="parameters" element="tns:getFullGuideResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSwitchSoapIn">
+    <wsdl:part name="parameters" element="tns:getSwitch" />
+  </wsdl:message>
+  <wsdl:message name="getSwitchSoapOut">
+    <wsdl:part name="parameters" element="tns:getSwitchResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertSwitchSoapIn">
+    <wsdl:part name="parameters" element="tns:insertSwitch" />
+  </wsdl:message>
+  <wsdl:message name="insertSwitchSoapOut">
+    <wsdl:part name="parameters" element="tns:insertSwitchResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateSwitchSoapIn">
+    <wsdl:part name="parameters" element="tns:updateSwitch" />
+  </wsdl:message>
+  <wsdl:message name="updateSwitchSoapOut">
+    <wsdl:part name="parameters" element="tns:updateSwitchResponse" />
+  </wsdl:message>
+  <wsdl:message name="approveSwitchSoapIn">
+    <wsdl:part name="parameters" element="tns:approveSwitch" />
+  </wsdl:message>
+  <wsdl:message name="approveSwitchSoapOut">
+    <wsdl:part name="parameters" element="tns:approveSwitchResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertShiftSoapIn">
+    <wsdl:part name="parameters" element="tns:insertShift" />
+  </wsdl:message>
+  <wsdl:message name="insertShiftSoapOut">
+    <wsdl:part name="parameters" element="tns:insertShiftResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertShiftSettingsSoapIn">
+    <wsdl:part name="parameters" element="tns:insertShiftSettings" />
+  </wsdl:message>
+  <wsdl:message name="insertShiftSettingsSoapOut">
+    <wsdl:part name="parameters" element="tns:insertShiftSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertShiftAfterEditingSoapIn">
+    <wsdl:part name="parameters" element="tns:insertShiftAfterEditing" />
+  </wsdl:message>
+  <wsdl:message name="insertShiftAfterEditingSoapOut">
+    <wsdl:part name="parameters" element="tns:insertShiftAfterEditingResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:insertMessage" />
+  </wsdl:message>
+  <wsdl:message name="insertMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:insertMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertTransferSoapIn">
+    <wsdl:part name="parameters" element="tns:insertTransfer" />
+  </wsdl:message>
+  <wsdl:message name="insertTransferSoapOut">
+    <wsdl:part name="parameters" element="tns:insertTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertEmployeeSoapIn">
+    <wsdl:part name="parameters" element="tns:insertEmployee" />
+  </wsdl:message>
+  <wsdl:message name="insertEmployeeSoapOut">
+    <wsdl:part name="parameters" element="tns:insertEmployeeResponse" />
+  </wsdl:message>
+  <wsdl:message name="loginUserSoapIn">
+    <wsdl:part name="parameters" element="tns:loginUser" />
+  </wsdl:message>
+  <wsdl:message name="loginUserSoapOut">
+    <wsdl:part name="parameters" element="tns:loginUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCalenderShiftsSoapIn">
+    <wsdl:part name="parameters" element="tns:getCalenderShifts" />
+  </wsdl:message>
+  <wsdl:message name="getCalenderShiftsSoapOut">
+    <wsdl:part name="parameters" element="tns:getCalenderShiftsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="RikoshetWebServiceSoap">
+    <wsdl:operation name="getEmployees">
+      <wsdl:input message="tns:getEmployeesSoapIn" />
+      <wsdl:output message="tns:getEmployeesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getChanges">
+      <wsdl:input message="tns:getChangesSoapIn" />
+      <wsdl:output message="tns:getChangesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getShiftsettings">
+      <wsdl:input message="tns:getShiftsettingsSoapIn" />
+      <wsdl:output message="tns:getShiftsettingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getGuide">
+      <wsdl:input message="tns:getGuideSoapIn" />
+      <wsdl:output message="tns:getGuideSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getTransfer">
+      <wsdl:input message="tns:getTransferSoapIn" />
+      <wsdl:output message="tns:getTransferSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProduct">
+      <wsdl:input message="tns:getProductSoapIn" />
+      <wsdl:output message="tns:getProductSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCategories">
+      <wsdl:input message="tns:getCategoriesSoapIn" />
+      <wsdl:output message="tns:getCategoriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMessage">
+      <wsdl:input message="tns:getMessageSoapIn" />
+      <wsdl:output message="tns:getMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getShifts">
+      <wsdl:input message="tns:getShiftsSoapIn" />
+      <wsdl:output message="tns:getShiftsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getFullProduct">
+      <wsdl:input message="tns:getFullProductSoapIn" />
+      <wsdl:output message="tns:getFullProductSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getFullGuide">
+      <wsdl:input message="tns:getFullGuideSoapIn" />
+      <wsdl:output message="tns:getFullGuideSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getSwitch">
+      <wsdl:input message="tns:getSwitchSoapIn" />
+      <wsdl:output message="tns:getSwitchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertSwitch">
+      <wsdl:input message="tns:insertSwitchSoapIn" />
+      <wsdl:output message="tns:insertSwitchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateSwitch">
+      <wsdl:input message="tns:updateSwitchSoapIn" />
+      <wsdl:output message="tns:updateSwitchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="approveSwitch">
+      <wsdl:input message="tns:approveSwitchSoapIn" />
+      <wsdl:output message="tns:approveSwitchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertShift">
+      <wsdl:input message="tns:insertShiftSoapIn" />
+      <wsdl:output message="tns:insertShiftSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertShiftSettings">
+      <wsdl:input message="tns:insertShiftSettingsSoapIn" />
+      <wsdl:output message="tns:insertShiftSettingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertShiftAfterEditing">
+      <wsdl:input message="tns:insertShiftAfterEditingSoapIn" />
+      <wsdl:output message="tns:insertShiftAfterEditingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertMessage">
+      <wsdl:input message="tns:insertMessageSoapIn" />
+      <wsdl:output message="tns:insertMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertTransfer">
+      <wsdl:input message="tns:insertTransferSoapIn" />
+      <wsdl:output message="tns:insertTransferSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertEmployee">
+      <wsdl:input message="tns:insertEmployeeSoapIn" />
+      <wsdl:output message="tns:insertEmployeeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="loginUser">
+      <wsdl:input message="tns:loginUserSoapIn" />
+      <wsdl:output message="tns:loginUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCalenderShifts">
+      <wsdl:input message="tns:getCalenderShiftsSoapIn" />
+      <wsdl:output message="tns:getCalenderShiftsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RikoshetWebServiceSoap" type="tns:RikoshetWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getEmployees">
+      <soap:operation soapAction="http://tempuri.org/getEmployees" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getChanges">
+      <soap:operation soapAction="http://tempuri.org/getChanges" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getShiftsettings">
+      <soap:operation soapAction="http://tempuri.org/getShiftsettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGuide">
+      <soap:operation soapAction="http://tempuri.org/getGuide" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTransfer">
+      <soap:operation soapAction="http://tempuri.org/getTransfer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProduct">
+      <soap:operation soapAction="http://tempuri.org/getProduct" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCategories">
+      <soap:operation soapAction="http://tempuri.org/getCategories" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessage">
+      <soap:operation soapAction="http://tempuri.org/getMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getShifts">
+      <soap:operation soapAction="http://tempuri.org/getShifts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFullProduct">
+      <soap:operation soapAction="http://tempuri.org/getFullProduct" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFullGuide">
+      <soap:operation soapAction="http://tempuri.org/getFullGuide" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSwitch">
+      <soap:operation soapAction="http://tempuri.org/getSwitch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertSwitch">
+      <soap:operation soapAction="http://tempuri.org/insertSwitch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateSwitch">
+      <soap:operation soapAction="http://tempuri.org/updateSwitch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="approveSwitch">
+      <soap:operation soapAction="http://tempuri.org/approveSwitch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertShift">
+      <soap:operation soapAction="http://tempuri.org/insertShift" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertShiftSettings">
+      <soap:operation soapAction="http://tempuri.org/insertShiftSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertShiftAfterEditing">
+      <soap:operation soapAction="http://tempuri.org/insertShiftAfterEditing" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertMessage">
+      <soap:operation soapAction="http://tempuri.org/insertMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertTransfer">
+      <soap:operation soapAction="http://tempuri.org/insertTransfer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertEmployee">
+      <soap:operation soapAction="http://tempuri.org/insertEmployee" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginUser">
+      <soap:operation soapAction="http://tempuri.org/loginUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCalenderShifts">
+      <soap:operation soapAction="http://tempuri.org/getCalenderShifts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="RikoshetWebServiceSoap12" type="tns:RikoshetWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getEmployees">
+      <soap12:operation soapAction="http://tempuri.org/getEmployees" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getChanges">
+      <soap12:operation soapAction="http://tempuri.org/getChanges" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getShiftsettings">
+      <soap12:operation soapAction="http://tempuri.org/getShiftsettings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGuide">
+      <soap12:operation soapAction="http://tempuri.org/getGuide" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTransfer">
+      <soap12:operation soapAction="http://tempuri.org/getTransfer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProduct">
+      <soap12:operation soapAction="http://tempuri.org/getProduct" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCategories">
+      <soap12:operation soapAction="http://tempuri.org/getCategories" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMessage">
+      <soap12:operation soapAction="http://tempuri.org/getMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getShifts">
+      <soap12:operation soapAction="http://tempuri.org/getShifts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFullProduct">
+      <soap12:operation soapAction="http://tempuri.org/getFullProduct" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFullGuide">
+      <soap12:operation soapAction="http://tempuri.org/getFullGuide" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSwitch">
+      <soap12:operation soapAction="http://tempuri.org/getSwitch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertSwitch">
+      <soap12:operation soapAction="http://tempuri.org/insertSwitch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateSwitch">
+      <soap12:operation soapAction="http://tempuri.org/updateSwitch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="approveSwitch">
+      <soap12:operation soapAction="http://tempuri.org/approveSwitch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertShift">
+      <soap12:operation soapAction="http://tempuri.org/insertShift" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertShiftSettings">
+      <soap12:operation soapAction="http://tempuri.org/insertShiftSettings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertShiftAfterEditing">
+      <soap12:operation soapAction="http://tempuri.org/insertShiftAfterEditing" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertMessage">
+      <soap12:operation soapAction="http://tempuri.org/insertMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertTransfer">
+      <soap12:operation soapAction="http://tempuri.org/insertTransfer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertEmployee">
+      <soap12:operation soapAction="http://tempuri.org/insertEmployee" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginUser">
+      <soap12:operation soapAction="http://tempuri.org/loginUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCalenderShifts">
+      <soap12:operation soapAction="http://tempuri.org/getCalenderShifts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RikoshetWebService">
+    <wsdl:port name="RikoshetWebServiceSoap" binding="tns:RikoshetWebServiceSoap">
+      <soap:address location="http://proj.ruppin.ac.il/igroup80/test2/tar1/RikoshetWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="RikoshetWebServiceSoap12" binding="tns:RikoshetWebServiceSoap12">
+      <soap12:address location="http://proj.ruppin.ac.il/igroup80/test2/tar1/RikoshetWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

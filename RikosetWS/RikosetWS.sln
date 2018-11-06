@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "RikosetWS", ".", "{ADFBD5A9-2C7E-48CE-8844-CF4B26EED1F2}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62738"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\Dropbox\לימודים\שנה ד\פרוייקט גמר ריקי ועידן - צוות ערבה\RikosetWS\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62738\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62738"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\Dropbox\לימודים\שנה ד\פרוייקט גמר ריקי ועידן - צוות ערבה\RikosetWS\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62738\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "62738"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADFBD5A9-2C7E-48CE-8844-CF4B26EED1F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFBD5A9-2C7E-48CE-8844-CF4B26EED1F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A97FC86C-20C8-4FEC-A881-4356FB5827CA}
+	EndGlobalSection
+EndGlobal

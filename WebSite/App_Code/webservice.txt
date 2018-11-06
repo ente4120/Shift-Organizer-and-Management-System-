@@ -1,0 +1,56 @@
+﻿//this file will be webService.cs
+
+//   <!------דף מוצרים - 2.1------>
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+     public string getProduct()
+    {
+       
+		Product prd=new Product();
+        List<Product> prdList = prd.getProducts();
+        JavaScriptSerializer js = new JavaScriptSerializer();
+        string jsonString = js.Serialize(catList);
+        return jsonString;
+    }
+
+	 //   <!------דף מידע מוצר - 2.1.2------>
+
+
+	[WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public string getProductInfo(string id)
+    {
+        Product p = new Product();
+        int prodId = Convert.ToInt32(id);
+        Product prod = new Product();
+        List<Product> listp = prod.getProductsInfo();
+        foreach (var item in listp)
+        {
+            if (item.ProductId == prodId)
+                p = item;
+        }
+        JavaScriptSerializer js = new JavaScriptSerializer();
+        string jsonString = js.Serialize(p);
+        return jsonString;
+    }
+}
+
+
+//   <!------דף הודעות - 3------>
+
+
+[WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+
+    public string getMessage()
+    {
+
+        Message msg = new Message();
+        List<Message> msgls = c.getMessage();
+
+        JavaScriptSerializer js = new JavaScriptSerializer();
+        // serialize to string
+        string jsonStringCategory = js.Serialize(ls);
+        return jsonStringCategory;
+    }
